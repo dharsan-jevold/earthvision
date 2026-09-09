@@ -1,0 +1,26 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+email-validator==2.2.0
+numpy==1.26.4
+python-multipart==0.0.9
+
+# Phase 10 — unsupervised ML change detection
+scikit-learn==1.5.2
+
+# Phase 12/25 — raster overlay + PNG export
+pillow==10.4.0
+
+# Phase 17 — database + auth
+sqlalchemy==2.0.35
+# SQLite is used by default (stdlib, no extra driver needed).
+# Swap DATABASE_URL to postgresql+psycopg2://... and uncomment below for Postgres/PostGIS:
+# psycopg2-binary==2.9.9
+# geoalchemy2==0.15.2
+
+# Phase 22 (not wired yet, kept for continuity):
+# celery==5.4.0
+# redis==5.0.8
+# rasterio==1.3.10
+# geopandas==1.0.1
+# shapely==2.0.6

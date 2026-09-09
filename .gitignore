@@ -1,0 +1,12 @@
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+data/*
+!data/demo/
+*.log
+.DS_Store
+*.db
+backend/earthvision.db
