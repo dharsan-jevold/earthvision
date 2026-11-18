@@ -108,9 +108,7 @@ earthvision-ai/
 │       ├── lib/api.ts        # typed backend client (all endpoints)
 │       └── store/            # Zustand app state (incl. auth token, layers, active layer)
 ├── docs/                    # this documentation
-├── docker/                  # (compose files reference backend/frontend Dockerfiles directly)
 ├── data/                    # local dev data (gitignored, not committed)
-└── docker-compose.yml
 ```
 
 ## Extension points (how each stubbed piece plugs in without a rewrite)
@@ -132,9 +130,9 @@ earthvision-ai/
   don't change. Add GeoAlchemy2 geometry columns for true spatial indexing
   when moving off SQLite.
 - **Async jobs**: `app/workers/` is where Celery tasks
-  (`download_imagery`, `preprocess`, `run_analysis`) would live; the
-  `docker-compose.yml` has commented-out `redis`/`worker` services ready to
-  uncomment once implemented. `/api/analysis/run` would become a
+  (`download_imagery`, `preprocess`, `run_analysis`) would live. A Redis
+  service and worker process can be added when those tasks are implemented;
+  `/api/analysis/run` would become a
   "queued → downloading → preprocessing → analyzing → completed" polling
   endpoint instead of a synchronous call.
 - **PDF export / AI chat / predictive analysis**: not yet started. PDF export

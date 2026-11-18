@@ -167,11 +167,11 @@ export default function MapSelector() {
   return (
     <div className="relative w-full h-full">
       <div ref={mapContainer} className="w-full h-full" />
-      <div className="absolute top-3 left-3 bg-slate-900/90 backdrop-blur border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 shadow-lg max-w-xs">
-        <p className="font-medium text-cyan-400 mb-1">Region selection</p>
-        <p>Hold <kbd className="px-1 bg-slate-700 rounded">Shift</kbd> + drag to draw a rectangle.</p>
+      <div className="absolute left-3 top-3 max-w-[min(90%,320px)] rounded-xl border border-slate-700/80 bg-slate-950/90 px-3.5 py-3 text-xs text-slate-200 shadow-xl shadow-black/20 backdrop-blur-md sm:left-4 sm:top-4">
+        <div className="mb-2 flex items-center gap-2"><span className="grid h-6 w-6 place-items-center rounded-lg bg-cyan-400/10 text-cyan-300" aria-hidden="true">◎</span><div><p className="font-semibold text-slate-100">Area of interest</p><p className="text-[10px] text-slate-500">Interactive map</p></div></div>
+        <p className="text-[11px] leading-relaxed text-slate-400">Hold <kbd className="rounded border border-slate-600 bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] text-slate-200">Shift</kbd> and drag to select a region.</p>
         {bbox && (
-          <p className="mt-1 text-slate-400">
+          <p className="mt-2 border-t border-slate-800 pt-2 font-mono text-[10px] text-slate-400">
             {bbox.min_lat.toFixed(3)}, {bbox.min_lon.toFixed(3)} → {bbox.max_lat.toFixed(3)}, {bbox.max_lon.toFixed(3)}
           </p>
         )}

@@ -25,7 +25,6 @@ and why, and "Honest limitations" below.
 | 25 (export) | ✅ Done — CSV, GeoJSON (PNG map export not yet built) |
 | 5 (real preprocessing pipeline) | ⚠️ Partial |
 | 18 (testing) | ⚠️ Partial — backend only, 36 tests |
-| 19 (Docker) | ⚠️ Partial — files written, not build-tested |
 | 20 (documentation) | ⚠️ Partial |
 | 15 (AI chat assistant), 16 (predictive analysis) | ❌ Not started |
 
@@ -50,37 +49,81 @@ and why, and "Honest limitations" below.
 9. Save analyses to named projects and reload them later.
 10. Export results as CSV or GeoJSON.
 
-## Quickstart (local, no Docker)
+## Run locally
+
+You only need Python 3.10+ and Node.js/npm. The backend uses SQLite by default,
+so there is no database server to install or start. Start the backend and
+frontend in two separate terminals.
 
 ### Backend
+
+From the project root, run:
+
 ```bash
 cd backend
+py -m venv .venv
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+pip install -r requirements-dev.txt  # optional: test dependencies
+python -m uvicorn app.main:app --reload --port 8000
 # API docs at http://localhost:8000/docs
 ```
 
+If PowerShell blocks virtual environment activation, run
+`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` in that terminal,
+then activate `.venv` again. On macOS/Linux, create and activate the environment
+with `python3 -m venv .venv` and `source .venv/bin/activate` instead.
+
 ### Frontend
+
+Open a second terminal from the project root:
+
 ```bash
 cd frontend
 npm install
-cp .env.example .env
 npm run dev
 # App at http://localhost:5173
 ```
 
+The frontend defaults to `http://localhost:8000/api`; no `.env` file is needed
+for local development. Set `VITE_API_BASE` in `frontend/.env` only if the API
+is running at a different address.
+
 ### Tests
 ```bash
 cd backend
-PYTHONPATH=. pytest tests/ -v
+python -m pytest tests/ -v
 # 36 tests: index math, change detection, ML clustering, time-series,
 # report generation, export, auth/persistence, full API flow
 ```
 
-## Quickstart (Docker)
+### Research pipeline status
+
+The existing two-date demo analysis remains available. Reusable preprocessing
+primitives now provide aligned-band validation, cloud/shadow and missing-value
+masks, reflectance clipping, and patch iteration. Temporal persistence helpers
+exclude invalid observations and expose configurable thresholds; they describe
+evidence across the available dates and do not prove permanent change.
+
+The supervised multi-temporal model, real Sentinel-2/Landsat acquisition,
+calibrated model uncertainty, and experimentally validated metrics still
+require training/reference data and further integration. Index-based and
+synthetic demo outputs are baselines, not trained semantic predictions. No
+research performance scores are reported without labeled evaluation data.
+
+Optional training scaffold: install a CUDA-compatible PyTorch build, prepare
+geographically separate `.npz` archives with `observations[N,T,C,H,W]` and
+`labels[N,T,H,W]` (`-1` for ignored pixels), then run from `backend`:
+
 ```bash
-docker compose up --build
+python -m pip install -r requirements-ml.txt
+python scripts/train_temporal.py --train data/train.npz --validation data/validation.npz
 ```
+
+The split must be by geographic region, not random neighboring patches. The
+provided metric helpers calculate segmentation/change and calibration scores
+only when reference labels are supplied; the training script does not claim
+those scores by itself.
 
 ## Why demo data, and how to connect a real satellite provider
 
@@ -133,4 +176,4 @@ changes required. See `docs/architecture.md` → "Extension points."
 3. Train the Siamese U-Net on LEVIR-CD, wire `predict()` in, report real eval metrics (Phase 10, supervised half).
 4. PDF report export and PNG map export (Phase 25, remainder).
 5. AI chat assistant grounded in stored analysis results, and the predictive-analysis module (Phases 15–16).
-6. Frontend test coverage (Phase 18, remainder) and a verified `docker compose up` run (Phase 19).
+6. Frontend test coverage (Phase 18, remainder).

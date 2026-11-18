@@ -30,9 +30,9 @@ function StatCard({
 }) {
   const positive = (changePct ?? 0) >= 0;
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
-      <p className="text-xs uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="text-2xl font-semibold text-slate-100 mt-1">{value}</p>
+    <div className="rounded-xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-900/60 p-4 shadow-sm shadow-black/10">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</p>
+      <p className="mt-2 text-xl font-semibold tracking-tight text-slate-100">{value}</p>
       {sub && <p className="text-xs text-slate-500 mt-0.5">{sub}</p>}
       {changePct !== undefined && (
         <p className={`text-sm mt-1 font-medium ${positive ? "text-emerald-400" : "text-red-400"}`}>
@@ -48,8 +48,8 @@ export default function ResultsDashboard() {
 
   if (!analysis) {
     return (
-      <div className="flex items-center justify-center h-full text-slate-600 text-sm p-8 text-center">
-        Select a region, find imagery, and run change detection to see results here.
+      <div className="flex h-full min-h-64 items-center justify-center p-8 text-center">
+        <div className="max-w-xs"><div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl border border-slate-700 bg-slate-900 text-slate-500">⌁</div><h2 className="text-sm font-semibold text-slate-300">Your analysis will appear here</h2><p className="mt-2 text-xs leading-relaxed text-slate-500">Select a region, search for imagery, then compare two observations to see the results.</p></div>
       </div>
     );
   }
@@ -61,9 +61,10 @@ export default function ResultsDashboard() {
   ];
 
   return (
-    <div className="p-4 flex flex-col gap-4 overflow-y-auto h-full">
+    <div className="flex h-full flex-col gap-4 overflow-y-auto p-4 sm:p-5">
+      <div className="flex items-end justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-300">Analysis overview</p><h2 className="mt-1 text-sm font-semibold text-slate-100">Change summary</h2></div><span className="rounded-md border border-slate-800 bg-slate-900 px-2 py-1 text-[10px] text-slate-500">{analysis.method}</span></div>
       {analysis.is_demo && (
-        <div className="bg-amber-950/40 border border-amber-800 text-amber-300 text-xs rounded px-3 py-2">
+        <div className="flex gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/[0.06] px-3 py-2.5 text-[11px] leading-relaxed text-amber-200/90">
           ⚠ DEMO DATA — synthetic imagery, for platform demonstration only.
         </div>
       )}
